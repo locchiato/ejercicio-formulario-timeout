@@ -1,70 +1,97 @@
 // Esta es la base de datos de nuestros usuarios
 const baseDeDatos = {
-  usuarios: [
-    {
-      id: 1,
-      name: "Steve Jobs",
-      email: "steve@jobs.com",
-      password: "Steve123",
-    },
-    {
-      id: 2,
-      name: "Ervin Howell",
-      email: "shanna@melissa.tv",
-      password: "Ervin345",
-    },
-    {
-      id: 3,
-      name: "Clementine Bauch",
-      email: "nathan@yesenia.net",
-      password: "Floppy39876",
-    },
-    {
-      id: 4,
-      name: "Patricia Lebsack",
-      email: "julianne.oconner@kory.org",
-      password: "MysuperPassword345",
-    },
-  ],
+    usuarios: [{
+            id: 1,
+            name: "Steve Jobs",
+            email: "steve@jobs.com",
+            password: "Steve123",
+        },
+        {
+            id: 2,
+            name: "Ervin Howell",
+            email: "shanna@melissa.tv",
+            password: "Ervin345",
+        },
+        {
+            id: 3,
+            name: "Clementine Bauch",
+            email: "nathan@yesenia.net",
+            password: "Floppy39876",
+        },
+        {
+            id: 4,
+            name: "Patricia Lebsack",
+            email: "julianne.oconner@kory.org",
+            password: "MysuperPassword345",
+        },
+    ],
 };
 
-// ACTIVIDAD
+const correo = document.getElementById("email-input");
+const pass = document.getElementById("password-input");
+const error = document.getElementById('error-container');
 
-// Paso a paso:
+// otroParaCorreos: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
 
-// 1) Escuchar el evento necesario para reaccionar cuando la persona
-// haga click en el botón iniciar sesión.
+const REGEXS = [/^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$/];
 
-// 2) El proceso de inicio de sesión deberá tener una demora de 3 segundos.
-// Deberás agregar la función correspondiente para simular dicha demora.
+window.onload = () => {
+    correo.addEventListener('input', event => {
+        let campo = event.target;
 
-// 3) Durante el tiempo indicado anteriormente, se deberá mostrar el mensaje "Iniciando sesión..."
+        let emailRegex = REGEXS[0];
+        if (!emailRegex.test(campo.value)) {
+            error.innerHTML = `<small>El correo ingresado es invalido.</small>`;
+            error.classList.remove('hidden');
+        } else {
+            error.innerHTML = '';
+            error.classList.add('hidden');
+        }
 
-// 4) A partir de los inputs ingresados en el formulario, se deberan realizar las siguientes validaciones:
-// 1) Que el primer input sea un email válido.
-// 2) Que la contraseña tenga al menos 5 caracteres.
-// 3) Que los datos ingresados corresponden a una
-// persona que se encuentre registrada en la base de datos.
-// En caso de que alguna de las validaciones no sea exitosa,
-// se deberá mostrar un mensaje de error que diga "Alguno de los datos ingresados son incorrectos"
+        if (error.innerHTML.length == 0) {} else {}
+    });
 
-// 5) En caso de que los datos ingresados sean correctos, se deberá ocultar el formulario y mostrar
-// un mensaje de bienvenida al sitio.
+    pass.addEventListener('input', event => {
+        let campo = event.target;
 
-/* 
-TIPS:
-  - Puedes averiguar acerca de la manera de validar el formato de un email utilizando Javascript, buscando
-    en internet frases como "Validar email con Javascript o similar".
+        if (campo.value.length < 5) {
+            error.innerHTML = `<small>La contraseña ingresada es muy corta.</small>`;
+            error.classList.remove('hidden');
+        } else {
+            error.innerHTML = '';
+            error.classList.add('hidden');
+        }
 
-  - Recuerda que puedes seleccionar y manipular los elementos del archivo index.html, usando los
-    recursos que Javascript te ofrece para ello. Además, en el archivo styles.css tiene algunas clases y 
-    estilos predefinidos para ayudarte a completar la actividad.
+    });
 
-  - También te dejamos algunos mensajes que te pueden ser de utilidad:
-  
-   Mensaje de error => <small>Alguno de los datos ingresados son incorrectos</small>
+    document.querySelector('.login-btn').onclick = e => {
+        e.preventDefault();
+        if (validarCampos()) {
+            document.querySelector('main').innerHTML = `
+          <h1> Bienvenido al sitio </h1>`;
+        } else {
+            error.innerHTML = `<small>Alguno de los datos ingresados son incorrectos</small>`;
+            error.classList.remove('hidden');
+        }
+    }
+}
 
-   Mensaje de bienvenida => "<h1> Bienvenido al sitio 😀 </h1>";
+function buscarUsuario() {
+    if (baseDeDatos.usuarios.find(
+            user => user.email == correo.value && user.password == pass.value)) {
+        error.innerHTML = '';
+        error.classList.remove('hidden');
+        return true;
+    } else {
+        error.innerHTML = `<small>El usuario ingresado no existe.</small>`;
+        error.classList.add('hidden');
+        return false;
+    }
 
-   ¡Manos a la obra!
- */
+}
+
+function validarCampos() {
+    const encontrado = buscarUsuario();
+
+    return error.innerHTML.length === 0 && encontrado;
+}

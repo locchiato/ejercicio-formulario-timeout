@@ -4,9 +4,16 @@
     box-sizing: border-box;
 }
 
+small {
+    color: red;
+}
+
 body {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
+    background-image: url(https://i.pinimg.com/originals/fd/1b/2c/fd1b2ca8aea70b1a632e98a782143e4e.jpg);
+    background-size: contain;
+    background-repeat: repeat;
 }
 
 h1 {
@@ -18,7 +25,6 @@ h1 {
 main {
     width: 100%;
     height: 100%;
-    background-image: url(https://i.pinimg.com/originals/fd/1b/2c/fd1b2ca8aea70b1a632e98a782143e4e.jpg);
     display: flex;
     justify-content: center;
     align-items: center;
